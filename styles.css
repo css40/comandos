@@ -259,3 +259,11 @@ main {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--accent-green);
 }
+
+/* Estilo activo para los botones de categoría y selector de OS */
+.os-btn.active {
+    background: var(--accent-cyan);
+    color: var(--bg-deep);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+    border-color: var(--accent-cyan);
+}

@@ -37,13 +37,14 @@
             <input type="text" id="searchInput" class="search-input" placeholder="> buscar_comando(instrucción, paquete)...">
         </div>
 
-        <!-- Categorías (Opcional si deseas añadirlas en el futuro) -->
+        <!-- Categorías (Incluyendo la nueva categoría Extras) -->
         <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-            <button onclick="filterCategory('all')" class="os-btn active" style="font-size: 0.65rem; padding: 6px 12px;">Todos</button>
-            <button onclick="filterCategory('packages')" class="os-btn" style="font-size: 0.65rem; padding: 6px 12px;">Paquetes</button>
-            <button onclick="filterCategory('system')" class="os-btn" style="font-size: 0.65rem; padding: 6px 12px;">Sistema</button>
-            <button onclick="filterCategory('files')" class="os-btn" style="font-size: 0.65rem; padding: 6px 12px;">Archivos</button>
-            <button onclick="filterCategory('network')" class="os-btn" style="font-size: 0.65rem; padding: 6px 12px;">Red</button>
+            <button onclick="filterCategory('all')" class="os-btn active cat-btn" style="font-size: 0.65rem; padding: 6px 12px;">Todos</button>
+            <button onclick="filterCategory('extras')" class="os-btn cat-btn" style="font-size: 0.65rem; padding: 6px 12px; color: var(--accent-green); border-color: rgba(0, 255, 102, 0.3);">✨ Utilidades & Extras</button>
+            <button onclick="filterCategory('packages')" class="os-btn cat-btn" style="font-size: 0.65rem; padding: 6px 12px;">Paquetes</button>
+            <button onclick="filterCategory('system')" class="os-btn cat-btn" style="font-size: 0.65rem; padding: 6px 12px;">Sistema</button>
+            <button onclick="filterCategory('files')" class="os-btn cat-btn" style="font-size: 0.65rem; padding: 6px 12px;">Archivos</button>
+            <button onclick="filterCategory('network')" class="os-btn cat-btn" style="font-size: 0.65rem; padding: 6px 12px;">Red</button>
         </div>
 
         <!-- Contenedor Dinámico donde JS inyectará las tarjetas -->
