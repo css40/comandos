@@ -14,12 +14,17 @@
     <!-- Header / HUD Principal -->
     <header>
         <div class="logo-box">
-            <div class="logo-icon"><i class="fa-solid fa-terminal"></i></div>
-            <div>
-                <h1 style="font-size: 1.1rem; color: var(--text-main);">Pixel Terminal</h1>
-                <p style="font-size: 0.65rem; color: var(--text-muted);">// system_control_v1.1</p>
-            </div>
-        </div>
+    <div class="avatar-container" title="¡Mr. Pixel en acción!">
+        <!-- Cambia "mr-pixel-1.png" por la ruta de tu primera foto -->
+        <img src="img/saludando.png" alt="Mr. Pixel" id="characterAvatar" class="character-avatar" onerror="this.style.display='none'; document.getElementById('fallbackIcon').style.display='flex';">
+        <div id="fallbackIcon" class="logo-icon" style="display:none;"><i class="fa-solid fa-terminal"></i></div>
+    </div>
+    
+    <div>
+        <h1 style="font-size: 1.1rem; color: var(--text-main);">Pixel Terminal</h1>
+        <p style="font-size: 0.65rem; color: var(--text-muted);">// system_control_v1.1</p>
+    </div>
+</div>
 
         <!-- Selector de Sistema Operativo -->
         <div class="os-selector">
@@ -37,7 +42,7 @@
             <input type="text" id="searchInput" class="search-input" placeholder="> buscar_comando(instrucción, paquete)...">
         </div>
 
-        <!-- Categorías (Incluyendo la nueva categoría Extras) -->
+        <!-- Categorías -->
         <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
             <button onclick="filterCategory('all')" class="os-btn active cat-btn" style="font-size: 0.65rem; padding: 6px 12px;">Todos</button>
             <button onclick="filterCategory('extras')" class="os-btn cat-btn" style="font-size: 0.65rem; padding: 6px 12px; color: var(--accent-green); border-color: rgba(0, 255, 102, 0.3);">✨ Utilidades & Extras</button>
