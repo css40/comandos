@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Terminal - Guía de Comandos</title>
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Hoja de estilos personalizada -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Header / HUD Principal -->
+    <header>
+        <div class="logo-box">
+            <div class="logo-icon"><i class="fa-solid fa-terminal"></i></div>
+            <div>
+                <h1 style="font-size: 1.1rem; color: var(--text-main);">Pixel Terminal</h1>
+                <p style="font-size: 0.65rem; color: var(--text-muted);">// system_control_v1.1</p>
+            </div>
+        </div>
+
+        <!-- Selector de Sistema Operativo -->
+        <div class="os-selector">
+            <button class="os-btn active" onclick="setOS('fedora')">Fedora</button>
+            <button class="os-btn" onclick="setOS('ubuntu')">Ubuntu</button>
+            <button class="os-btn" onclick="setOS('windows')">Windows</button>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main>
+        <!-- Buscador -->
+        <div class="search-container">
+            <i class="fa-solid fa-code search-icon"></i>
+            <input type="text" id="searchInput" class="search-input" placeholder="> buscar_comando(instrucción, paquete)...">
+        </div>
+
+        <!-- Categorías (Opcional si deseas añadirlas en el futuro) -->
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+            <button onclick="filterCategory('all')" class="os-btn active" style="font-size: 0.65rem; padding: 6px 12px;">Todos</button>
+            <button onclick="filterCategory('packages')" class="os-btn" style="font-size: 0.65rem; padding: 6px 12px;">Paquetes</button>
+            <button onclick="filterCategory('system')" class="os-btn" style="font-size: 0.65rem; padding: 6px 12px;">Sistema</button>
+            <button onclick="filterCategory('files')" class="os-btn" style="font-size: 0.65rem; padding: 6px 12px;">Archivos</button>
+            <button onclick="filterCategory('network')" class="os-btn" style="font-size: 0.65rem; padding: 6px 12px;">Red</button>
+        </div>
+
+        <!-- Contenedor Dinámico donde JS inyectará las tarjetas -->
+        <div id="commandList" class="grid-commands">
+            <!-- Los comandos se cargan automáticamente desde app.js -->
+        </div>
+    </main>
+
+    <!-- Script JavaScript -->
+    <script src="app.js" defer></script>
+</body>
+</html>
