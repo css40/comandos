@@ -1,64 +1,191 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixel Terminal - Guía de Comandos</title>
-    <!-- FontAwesome para iconos -->
+    <title>Pixel Terminal · Guía de comandos</title>
+    <meta name="description" content="Guía interactiva de comandos para Fedora, Ubuntu y Windows (PowerShell y CMD), con explicación paso a paso, ejemplos y consejos.">
+    <meta name="theme-color" content="#090e13">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="apple-touch-icon" href="img/pwa-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!-- Aplica el tema guardado ANTES de pintar para evitar parpadeos -->
+    <script>
+        (function () {
+            var t = null;
+            try { t = localStorage.getItem('pt-theme'); } catch (e) {}
+            if (t !== 'light' && t !== 'dark') {
+                t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+            }
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
+
+    <!-- Tipografías: Space Grotesk (títulos), Inter (texto), JetBrains Mono (código) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+    <!-- Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Hoja de estilos personalizada -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <a class="skip-link" href="#commandList">Saltar a los comandos</a>
 
-    <!-- Header / HUD Principal -->
-    <header>
-        <div class="logo-box">
-    <div class="avatar-container" title="¡Mr. Pixel en acción!">
-        <!-- Cambia "mr-pixel-1.png" por la ruta de tu primera foto -->
-        <img src="img/saludando.png" alt="Mr. Pixel" id="characterAvatar" class="character-avatar" onerror="this.style.display='none'; document.getElementById('fallbackIcon').style.display='flex';">
-        <div id="fallbackIcon" class="logo-icon" style="display:none;"><i class="fa-solid fa-terminal"></i></div>
-    </div>
-    
-    <div>
-        <h1 style="font-size: 1.1rem; color: var(--text-main);">Pixel Terminal</h1>
-        <p style="font-size: 0.65rem; color: var(--text-muted);">// system_control_v1.1</p>
-    </div>
-</div>
+    <!-- ============ HEADER ============ -->
+    <header class="topbar">
+        <a class="brand" href="./" aria-label="Pixel Terminal, inicio">
+            <span class="brand-logo"><img src="img/icono1.png" alt="" width="44" height="38"></span>
+            <span class="brand-text">
+                <span class="brand-name">Pixel Terminal<span class="cursor" aria-hidden="true">_</span></span>
+                <span class="brand-sub">// guía de comandos · v2.0</span>
+            </span>
+        </a>
 
-        <!-- Selector de Sistema Operativo -->
-        <div class="os-selector">
-            <button class="os-btn active" onclick="setOS('fedora')">Fedora</button>
-            <button class="os-btn" onclick="setOS('ubuntu')">Ubuntu</button>
-            <button class="os-btn" onclick="setOS('windows')">Windows</button>
-        </div>
+        <nav class="os-tabs" id="osTabs" aria-label="Sistema operativo">
+            <button class="os-tab is-active" data-os="fedora" aria-pressed="true"><i class="fa-brands fa-fedora" aria-hidden="true"></i><span>Fedora</span></button>
+            <button class="os-tab" data-os="ubuntu" aria-pressed="false"><i class="fa-brands fa-ubuntu" aria-hidden="true"></i><span>Ubuntu</span></button>
+            <button class="os-tab" data-os="windows" aria-pressed="false"><i class="fa-brands fa-windows" aria-hidden="true"></i><span>Windows</span></button>
+        </nav>
+
+        <button class="theme-toggle" id="themeToggle" role="switch" aria-checked="true" aria-label="Cambiar entre modo oscuro y modo blanco">
+            <span class="theme-track" aria-hidden="true">
+                <i class="fa-solid fa-moon"></i>
+                <i class="fa-solid fa-sun"></i>
+                <span class="theme-thumb"></span>
+            </span>
+            <span class="theme-label" id="themeLabel">Modo oscuro</span>
+        </button>
     </header>
 
-    <!-- Contenido Principal -->
     <main>
-        <!-- Buscador -->
-        <div class="search-container">
-            <i class="fa-solid fa-code search-icon"></i>
-            <input type="text" id="searchInput" class="search-input" placeholder="> buscar_comando(instrucción, paquete)...">
-        </div>
+        <!-- ============ HERO ============ -->
+        <section class="hero" aria-labelledby="heroTitle">
+            <div class="hero-copy">
+                <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span><span id="osLine">fedora@pixel:~$</span></p>
+                <h1 id="heroTitle">Domina la terminal, <em>un comando</em> a la vez.</h1>
+                <p class="lead" id="osLead"></p>
 
-        <!-- Categorías -->
-        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-            <button onclick="filterCategory('all')" class="os-btn active cat-btn" style="font-size: 0.65rem; padding: 6px 12px;">Todos</button>
-            <button onclick="filterCategory('extras')" class="os-btn cat-btn" style="font-size: 0.65rem; padding: 6px 12px; color: var(--accent-green); border-color: rgba(0, 255, 102, 0.3);">✨ Utilidades & Extras</button>
-            <button onclick="filterCategory('packages')" class="os-btn cat-btn" style="font-size: 0.65rem; padding: 6px 12px;">Paquetes</button>
-            <button onclick="filterCategory('system')" class="os-btn cat-btn" style="font-size: 0.65rem; padding: 6px 12px;">Sistema</button>
-            <button onclick="filterCategory('files')" class="os-btn cat-btn" style="font-size: 0.65rem; padding: 6px 12px;">Archivos</button>
-            <button onclick="filterCategory('network')" class="os-btn cat-btn" style="font-size: 0.65rem; padding: 6px 12px;">Red</button>
-        </div>
+                <div class="search">
+                    <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+                    <input type="search" id="searchInput" class="search-input" placeholder="Buscar un comando…" autocomplete="off" spellcheck="false" aria-label="Buscar comandos">
+                    <kbd class="search-kbd" aria-hidden="true">/</kbd>
+                </div>
 
-        <!-- Contenedor Dinámico donde JS inyectará las tarjetas -->
-        <div id="commandList" class="grid-commands">
-            <!-- Los comandos se cargan automáticamente desde app.js -->
+                <ul class="stats" id="stats" aria-label="Resumen"></ul>
+            </div>
+
+            <div class="hero-mascot" aria-hidden="true">
+                <div class="bubble" id="bubble"></div>
+                <div class="mascot-stage">
+                    <img id="heroImg" src="img/saludando.png" alt="" width="363" height="344">
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ FILTROS ============ -->
+        <section class="toolbar" aria-label="Filtros">
+            <div class="shell-switch" id="shellSwitch" hidden>
+                <span class="shell-switch-label">Consola:</span>
+                <div class="segmented" role="group" aria-label="Elegir consola de Windows">
+                    <button class="seg is-active" data-shell="powershell" aria-pressed="true"><i class="fa-solid fa-terminal" aria-hidden="true"></i> PowerShell</button>
+                    <button class="seg" data-shell="cmd" aria-pressed="false"><i class="fa-solid fa-window-maximize" aria-hidden="true"></i> CMD</button>
+                </div>
+            </div>
+            <div class="chips" id="chips" role="group" aria-label="Categorías"></div>
+        </section>
+
+        <p class="shell-note" id="shellNote" hidden></p>
+
+        <!-- ============ LISTA DE COMANDOS ============ -->
+        <div id="commandList" class="grid" aria-live="polite"></div>
+
+        <div class="empty" id="empty" hidden>
+            <img src="img/dudas.png" alt="Mr. Pixel con dudas" width="160">
+            <h2>No encontré ese comando</h2>
+            <p>Prueba con otra palabra (por ejemplo <code>instalar</code>, <code>red</code> o <code>procesos</code>) o cambia de categoría.</p>
+            <button class="btn" id="clearFilters"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Limpiar filtros</button>
         </div>
     </main>
 
-    <!-- Script JavaScript -->
-    <script src="app.js" defer></script>
+    <footer class="footer">
+        <img src="img/comentarios-publiacaiones.png" alt="" width="64" aria-hidden="true">
+        <p><strong>Pixel Terminal</strong> · Haz clic en cualquier tarjeta para ver el paso a paso. <span class="footer-muted">Atajos: <kbd>/</kbd> buscar · <kbd>←</kbd> <kbd>→</kbd> navegar · <kbd>Esc</kbd> cerrar</span></p>
+    </footer>
+
+    <!-- ============ MODAL DE DETALLE ============ -->
+    <dialog id="cmdModal" class="modal" aria-labelledby="mTitle">
+        <div class="modal-shell">
+            <header class="modal-head">
+                <div class="modal-mascot" aria-hidden="true"><img id="mImg" src="img/sentado.png" alt=""></div>
+                <div class="modal-titles">
+                    <div class="modal-badges" id="mBadges"></div>
+                    <h2 id="mTitle"></h2>
+                </div>
+                <button class="icon-btn modal-close" id="mClose" aria-label="Cerrar ventana"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+            </header>
+
+            <div class="modal-body" id="mBody">
+                <section class="m-section">
+                    <h3><i class="fa-solid fa-terminal" aria-hidden="true"></i> Comando</h3>
+                    <div class="console console-lg">
+                        <code id="mCmd"></code>
+                        <button class="copy-btn" id="mCopy" aria-label="Copiar comando"><i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copiar</span></button>
+                    </div>
+                    <p class="m-desc" id="mDesc"></p>
+                </section>
+
+                <section class="m-section">
+                    <h3><i class="fa-solid fa-list-ol" aria-hidden="true"></i> Paso a paso</h3>
+                    <ol class="steps" id="mSteps"></ol>
+                </section>
+
+                <section class="m-section">
+                    <h3><i class="fa-solid fa-flask" aria-hidden="true"></i> Ejemplo práctico</h3>
+                    <div class="term-window">
+                        <div class="term-bar">
+                            <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                            <span class="term-title" id="mTermTitle"></span>
+                            <button class="copy-btn copy-btn-sm" id="mCopyEx" aria-label="Copiar ejemplo"><i class="fa-regular fa-copy" aria-hidden="true"></i></button>
+                        </div>
+                        <pre class="term-body" id="mExample" tabindex="0"></pre>
+                    </div>
+                </section>
+
+                <section class="m-section" id="mNotesSection">
+                    <h3><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Notas y consejos</h3>
+                    <ul class="notes" id="mNotes"></ul>
+                </section>
+            </div>
+
+            <footer class="modal-foot">
+                <button class="btn btn-ghost" id="mPrev"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i><span>Anterior</span></button>
+                <span class="modal-counter" id="mCounter"></span>
+                <button class="btn btn-ghost" id="mNext"><span>Siguiente</span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+            </footer>
+        </div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- Datos de comandos (uno por sistema) -->
+    <script src="data/linux-core.js"></script>
+    <script src="data/fedora.js"></script>
+    <script src="data/ubuntu.js"></script>
+    <script src="data/powershell.js"></script>
+    <script src="data/cmd.js"></script>
+    <!-- Lógica de la aplicación -->
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('./sw.js').catch(function (error) {
+                    console.error('No se pudo registrar el Service Worker:', error);
+                });
+            });
+        }
+    </script>
 </body>
 </html>
